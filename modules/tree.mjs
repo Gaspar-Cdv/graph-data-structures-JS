@@ -5,16 +5,16 @@ export class Tree extends Graph { // rooted tree only ?
 
     #degree = Infinity; // maximum number of children for each node
 
-    constructor(edges, degree = Infinity) {
+    constructor(edges, degree=Infinity) {
         super(edges);
     }
 
-    
+
     /******************** SETTERS ********************/
 
     set degree(n) {
         this.#degree = n;
-        // delete excess nodes
+        // delete excess nodes, or reorder ?
     }
 
 
@@ -28,8 +28,21 @@ export class Tree extends Graph { // rooted tree only ?
 
     }
 
-    depth(node) {
+    depth(node) { // distance from the root
 
+    }
+
+    height(node) { // distance to the farest leave
+
+    }
+
+    
+    get breadth() { // number of leaves
+        return this.leaves.length;
+    }
+
+    subTree(node) { 
+        // return new Tree(this.edges.filter(......))
     }
 
     getParent(node) {
@@ -42,11 +55,6 @@ export class Tree extends Graph { // rooted tree only ?
 
     hasSiblings(node) {
         return this.getSiblings(node).length > 0;
-    }
-
-
-    get breadth() { // number of leaves
-        return this.leaves.length;
     }
 
     get isFull() { // m-ary tree where every node has either 0 or m children
@@ -86,6 +94,10 @@ export class Tree extends Graph { // rooted tree only ?
 
     static isTree(tree) {
         return tree instanceof Tree;
+    }
+
+    static isValidTree(edges, degree=Infinity) {
+
     }
 
 
