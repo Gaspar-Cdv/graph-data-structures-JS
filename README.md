@@ -26,7 +26,7 @@ It allows you to easily make operations in data structures, like finding shortes
   - [Setters](https://github.com/Gaspar-Cdv/graph-data-structures-JS#setters)
     - [Nodes](https://github.com/Gaspar-Cdv/graph-data-structures-JS#nodes-1)
     - [Edges](https://github.com/Gaspar-Cdv/graph-data-structures-JS#edges-1)
-  - [Static functions]((https://github.com/Gaspar-Cdv/graph-data-structures-JS#static-functions)
+  - [Static functions](https://github.com/Gaspar-Cdv/graph-data-structures-JS#static-functions)
 - [Grid.mjs](https://github.com/Gaspar-Cdv/graph-data-structures-JS#gridmjs)
 - [Tree.mjs](https://github.com/Gaspar-Cdv/graph-data-structures-JS#treemjs)
 
