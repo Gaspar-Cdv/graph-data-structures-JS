@@ -9,25 +9,25 @@ It allows you to easily make operations in data structures, like finding shortes
 
 ## Contents
 
-- Objects formats
-  - Node lists
-  - Edge lists
-  - Adjacency lists
-  - Matrices
-  - Grids
-- Constructors
-- Graph.mjs
-  - Getters
-    - Nodes
-    - Edges
-    - Adjacency list
-    - Matrix
-    - Other getters
-  - Setters
-    - Nodes
-    - Edges
-- Grid.mjs
-- Tree.mjs
+- [Objects formats](https://github.com/Gaspar-Cdv/graph-data-structures-JS#objects-formats)
+  - [Node lists](https://github.com/Gaspar-Cdv/graph-data-structures-JS#node-lists)
+  - [Edge lists](https://github.com/Gaspar-Cdv/graph-data-structures-JS#edge-lists)
+  - [Adjacency lists](https://github.com/Gaspar-Cdv/graph-data-structures-JS#adjacency-lists)
+  - [Matrices](https://github.com/Gaspar-Cdv/graph-data-structures-JS#matrices)
+  - [Grids](https://github.com/Gaspar-Cdv/graph-data-structures-JS#grids)
+- [Constructors](https://github.com/Gaspar-Cdv/graph-data-structures-JS#constructors)
+- [Graph.mjs](https://github.com/Gaspar-Cdv/graph-data-structures-JS#graphmjs)
+  - [Getters](https://github.com/Gaspar-Cdv/graph-data-structures-JS#getters)
+    - [Nodes](https://github.com/Gaspar-Cdv/graph-data-structures-JS#nodes)
+    - [Edges](https://github.com/Gaspar-Cdv/graph-data-structures-JS#edges)
+    - [Adjacency list](https://github.com/Gaspar-Cdv/graph-data-structures-JS#adjacency-list)
+    - [Matrix](https://github.com/Gaspar-Cdv/graph-data-structures-JS#matrix)
+    - [Other getters](https://github.com/Gaspar-Cdv/graph-data-structures-JS#other-getters)
+  - [Setters](https://github.com/Gaspar-Cdv/graph-data-structures-JS#setters)
+    - [Nodes](https://github.com/Gaspar-Cdv/graph-data-structures-JS#nodes-1)
+    - [Edges](https://github.com/Gaspar-Cdv/graph-data-structures-JS#edges-1)
+- [Grid.mjs](https://github.com/Gaspar-Cdv/graph-data-structures-JS#gridmjs)
+- [Tree.mjs](https://github.com/Gaspar-Cdv/graph-data-structures-JS#treemjs)
 
 ## Objects formats
 
