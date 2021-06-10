@@ -26,6 +26,7 @@ It allows you to easily make operations in data structures, like finding shortes
   - [Setters](https://github.com/Gaspar-Cdv/graph-data-structures-JS#setters)
     - [Nodes](https://github.com/Gaspar-Cdv/graph-data-structures-JS#nodes-1)
     - [Edges](https://github.com/Gaspar-Cdv/graph-data-structures-JS#edges-1)
+  - [Static functions]((https://github.com/Gaspar-Cdv/graph-data-structures-JS#static-functions)
 - [Grid.mjs](https://github.com/Gaspar-Cdv/graph-data-structures-JS#gridmjs)
 - [Tree.mjs](https://github.com/Gaspar-Cdv/graph-data-structures-JS#treemjs)
 
@@ -45,7 +46,7 @@ Graph objects accept four formats of node lists : arrays, weighted arrays, objec
     Graph.nodeListType(new Map([['A', 0], ['B', 0], ['C', 0]])); // return 'map'
     // else return false
 
-Note : a node list cannot combine weighted nodes and non-weighted nodes (it returns false).
+Note : a node list cannot combine weighted nodes and non-weighted nodes (it returns `false`).
 
 ### Edge lists
 
@@ -59,7 +60,7 @@ Graph objects also accept four formats of edge lists : arrays, weighted arrays, 
     Graph.edgeListType(new Map([[['A', 'B'], 5], [['A', 'C'], 2], [['B', 'C'], 3]])); // return 'map'
     // else return false
 
-Note : an edge list cannot combine weighted nodes and non-weighted nodes (it returns false).
+Note : an edge list cannot combine weighted nodes and non-weighted nodes (it returns `false`).
 
 ### Adjacency lists
 
@@ -74,7 +75,7 @@ Graph objects accept five formats of adjacency lists : arrays, labelled arrays, 
     Graph.adjListType({'A': {'B': 5, 'C': 2}, 'B': {'A': 1, 'C': 3}});                       // return 'weighted object'
     // else return false
     
-Note : if adjListType is 'array', each node must be a positive integer, and each subarray refers to its index (here, the node 0 has three children : 1, 2 and 3).
+Note : if adjListType is `'array'`, each node must be a positive integer, and each subarray refers to its index (here, the node 0 has three children : 1, 2 and 3).
 
 ### Matrices
 
@@ -101,7 +102,7 @@ Graph objects accept two formats of matrices : arrays and objects.
     Graph.matrixType(matrixObject); // return 'object'
     // else return false
     
-Note : if matrixType is 'array', each node is represented by indexes of each subarray.
+Note : if matrixType is `'array'`, each node is represented by indexes of each subarray.
 
 ### Grids
 
@@ -130,8 +131,8 @@ Grid objects accept two formats of grids : arrays where each value is a string a
 ## Constructors
 
 There is many ways to create an instance of a Graph :
-- `new Graph(edges, nodes)` where `edges` and `nodes` are respectively valid edge list and node list. The nodes argument is facultative (node list can be automatically determinated from edge list).
-- `Graph.fromAdjList(adjList, nodes)` where `adjList` is a valid adjacency list. If there is non-connected nodes which don't appear it the adjacency list, you can add them in an array in the `nodes` argument. Its default value is `undefined`.
+- `new Graph(edges, nodes=undefined)` where `edges` and `nodes` are respectively valid edge list and node list. The `nodes` argument is facultative (node list can be automatically determinated from edge list).
+- `Graph.fromAdjList(adjList, nodes=undefined)` where `adjList` is a valid adjacency list. If there is non-connected nodes which don't appear it the adjacency list, you can add them in an array in the `nodes` argument.
 - `Graph.fromMatrix(matrix)` where `matrix` is a valid adjacency matrix.
 - `Grid.fromGrid(grid, wall)` where `grid` is a valid grid and `wall` is a single character used to distinguish nodes from walls.
 
@@ -171,7 +172,7 @@ There are many ways to filter the graph's node list. Note : all the methods belo
     
 To get the degree of a specific node, use `graph.getDegree(node)`. The degree of a node is the number of its children.
 
-A least, there are also many features to have some informations about a specific node. All of these will return a boolean. Their names speak for themselves.
+At last, there are also many features to have some informations about a specific node. All of these will return a boolean. Their names speak for themselves.
 
     graph.isRoot(node);
     graph.isLeave(node);
@@ -249,6 +250,12 @@ Two useful features are implemented in the Graph class, to quickly link or unlin
   - `false` means every edges will be linked/unlinked only from the other edges to the specified node (doesn't work if node='all').
 
 So to connect or disconnect every node in the Graph object, you can simply use `graph.linkAll()` or `graph.unlinkAll()`. The density or the graph will be respectively 1 and 0.
+
+At last, to set the weight of a specific edge, use `graph.setWeight(weight, start, end, both=false)`. If `both=false`, only the edge from `start` to `end` will be setted. Otherwise, both directions will be changed.
+
+### Static functions
+
+...
 
 ## Grid.mjs
 
