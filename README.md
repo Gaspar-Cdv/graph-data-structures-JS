@@ -5,7 +5,29 @@
 
 # Graph data structures
 This collection of data structures consists of JavaScript classes for various graph types : common graphs, grids and trees.<br>
-It allows you to easily make operations in data structures, like finding shortest path, displaying matrix or adjacency list, generating rooted trees, and so on...</p>
+It allows you to easily make operations in data structures, like finding shortest path, displaying matrices or adjacency lists, generating rooted trees, and so on...</p>
+
+## Contents
+
+- Objects formats
+  - Node lists
+  - Edge lists
+  - Adjacency lists
+  - Matrices
+  - Grids
+- Constructors
+- Graph.mjs
+  - Getters
+    - Nodes
+    - Edges
+    - Adjacency list
+    - Matrix
+    - Other getters
+  - Setters
+    - Nodes
+    - Edges
+- Grid.mjs
+- Tree.mjs
 
 ## Objects formats
 
@@ -15,7 +37,7 @@ Graph uses many objects like edge lists, node lists, adjacency lists, matrices,.
 
 A node can be a string or a number. If a node is weighted, its weight must be a number. If a node is not weighted, its default value is 0.
 
-Graph objects accept four formats of node lists : arrays, weighted arrays, objects and Map objects.
+Graph objects accept four formats of node lists : arrays, weighted arrays, objects and Map objects. Once the graph instanced, the node list is automatically converted to Map object.
 
     Graph.nodeListType(['A', 'B', 'C']);                         // return 'array'
     Graph.nodeListType([['A', 0], ['B', 0], ['C', 0]]);          // return 'weighted array'
@@ -29,7 +51,7 @@ Note : a node list cannot combine weighted nodes and non-weighted nodes (it retu
 
 An edge is a link between two nodes (e.g. `['A', 'B']`). An edge can also be weighted. If not, its default value is 1.
 
-Graph objects also accept four formats of edge lists : arrays, weighted arrays, objects and Map objects.
+Graph objects also accept four formats of edge lists : arrays, weighted arrays, objects and Map objects. Once the graph instanced, the edge list is automatically converted to Map object.
 
     Graph.edgeListType([[0, 1], [0, 2], [1, 2]]);                                     // return 'array'
     Graph.edgeListType([[['A', 'B'], 5], [['A', 'C'], 2], [['B', 'C'], 3]]);          // return 'weighted array'
@@ -105,13 +127,11 @@ Grid objects accept two formats of grids : arrays where each value is a string a
     Grid.gridType(grid.map(line => [...line]); // return 'array'
     // else return false
     
-## Graph.mjs
-
-### Constructors
+## Constructors
 
 There is many ways to create an instance of a Graph :
 - `new Graph(edges, nodes)` where `edges` and `nodes` are respectively valid edge list and node list. The nodes argument is facultative (node list can be automatically determinated from edge list).
-- `Graph.fromAdjList(adjList)` where `adjList` is a valid adjacency list.
+- `Graph.fromAdjList(adjList, nodes)` where `adjList` is a valid adjacency list. If there is non-connected nodes which don't appear it the adjacency list, you can add them in an array in the `nodes` argument. Its default value is `undefined`.
 - `Graph.fromMatrix(matrix)` where `matrix` is a valid adjacency matrix.
 - `Grid.fromGrid(grid, wall)` where `grid` is a valid grid and `wall` is a single character used to distinguish nodes from walls.
 
@@ -120,16 +140,115 @@ It is also possible to easily generate grids and trees :
     - `orientation='NESW'` (default value) : each node is connected to each of its four neighbors.
     - `orientation='SE` : each node is connected at most to two neighbors (at the right and at the bottom). The top-left node (at coordinates `[0, 0]`) has no parents, whereas the bottom-right node (at coordinates `[width-1, height-1]`) has no child.
     - `orientation=''` : none of the nodes is connected. There is no edges.
-- `Tree.generateTree(m, branchs)` where `n` is the total number of nodes and branchs is the maximum number of children for each node. Example, for `branchs=2` (the default value), it will return a complete binary tree.
+- `Tree.generateTree(n, branchs)` where `n` is the total number of nodes and branchs is the maximum number of children for each node. For xample, `branchs=2` (the default value) will return a complete binary tree.
 
+All these methods return a Graph object (which an also be a Tree or a Grid object).
+
+## Graph.mjs
+
+From now, all the examples below will be presented with a Graph instance called `graph` :
+
+    let graph = new Graph(edges, nodes);
 
 ### Getters
 
-...
+#### Nodes
+
+You can easily get a non-weighted node list or a weighted node list. Remember, if no weights are specified during the Graph instantiation, all nodes will be initialized to 0.
+
+    graph.nodes;           // return an array, like ['A', 'B', 'C']
+    graph.weightedNodes;   // return a Map object, like {'A' => 0, 'B' => 0, 'C' => 0)
+    
+    graph.getWeight(node); // return the weight of a specific node
+    
+There are many ways to filter the graph's node list. Note : all the methods below will return a non-weighted node list :
+
+    graph.roots;              // return nodes with no parents
+    graph.leaves;             // return nodes with no children
+    graph.getParents(node);   // return parents of a specific node
+    graph.getChildren(node);  // return children of a specific node
+    graph.getNeighbors(node); // return parents and children of a specific node (without redundancy)
+    
+To get the degree of a specific node, use `graph.getDegree(node)`. The degree of a node is the number of its children.
+
+A least, there are also many features to have some informations about a specific node. All of these will return a boolean. Their names speak for themselves.
+
+    graph.isRoot(node);
+    graph.isLeave(node);
+    graph.hasParents(node);
+    graph.hasChildren(node);
+    graph.hasNeighbors(node);
+    graph.hasNode(node); // return if a node is included in the graph's node list
+    
+#### Edges
+
+Like for nodes, you can get non-weighted or weighted edge list. The default weight for each edge is 1.
+
+    graph.edges;                 // return an array, like [['A', 'B'], ['A', 'C'], ['B', 'C']]
+    graph.weightedEdges;         // return a Map object, like {['A', 'B'] => 1, ['A', 'C'] => 1, ['B', 'C'] => 1}
+    
+    graph.getWeight(start, end); // return the weight of a specific edge, from the node `start` to the node `end`
+                                 // or return undefined it the edge doesn't exist
+ 
+To check if an edge exists in the Graph object, use `graph.isLinked(start, end, both)`. The `both` argument is a boolean, which determines if you want to check the edge in an oriented or a non-oriented way. If `both=false` (the default value), it will return if an edge is linked from `start` to `end` only. If `both=true`, it will return if an edge is link from `start` to `end` AND from `end` to `start`.
+
+#### Adjacency list
+
+It's possible to get a non-weighted or a weighted adjacency list.
+
+    graph.adjList;         // return an object, like {'A': ['B', 'C'], 'B': ['A', 'C']}
+    graph.weightedAdjList; // return a weighted object, like {'A': {'B': 5, 'C': 2}, 'B': {'A': 1, 'C': 3}}
+
+#### Matrix
+
+The returned matrix is an object (see above).
+
+    graph.matrix;
+
+#### Other getters
+
+    graph.size;       // return the number of nodes
+    graph.density;    // return the ratio between edges number and nodes number
+                      // 0 means there is no edge, 1 means all nodes are connected to each others
+    graph.isOriented; // return a boolean. A graph is oriented if there is at least one edge non-oriented
 
 ### Setters
 
-...
+#### Nodes
+
+It is possible to add or delete nodes in a Graph object. Note : if you delete a node, each edge which was connected to will be deleted too.
+
+    graph.addNode(...nodes);    // you can add one or as much nodes as you want
+    graph.deleteNode(...nodes); // you can delete one or as much nodes as you want
+    
+To set the weight of a specific node, use `graph.setWeight(weight, node)`.
+
+#### Edges
+
+In the same way, you can link or unlink edges.
+
+    graph.link(start, end, weight=1, both=false); // if an edge already exists, its weight will be changed.
+                                                  // if both=false, the edge will be oriented from start to end only
+                                                  // else the edge will be linked in both directions
+    graph.unlink(start, end, both=false);         // if both=false, only the edge from start to end will be unlinked
+                                                  // else the edge will be unlink in both directions
+
+Two useful features are implemented in the Graph class, to quickly link or unlink all edges from a specific node, or all edges of the entire Graph object.
+
+    graph.linkAll(node='all', weight=1, fromNode='both');
+    graph.unlinkAll(node='all', fromNode='both')
+
+- node argument :
+  - `'all'` (the default value) means every node will be linked/unlinked to each other.
+  - else this argument can take a node exisiting in the Graph object.
+- weight argument (for linkAll() only) :
+  - set the weight of every edges created. If an edge already exists, its weight will be preserved.
+- fromNode argument :
+  - `'both'` (the default value) means edges will be linked/unlinked in both directions.
+  - `true` means every edges will be linked/unlinked only from the specified node to each other (doesn't work if node='all').
+  - `false` means every edges will be linked/unlinked only from the other edges to the specified node (doesn't work if node='all').
+
+So to connect or disconnect every node in the Graph object, you can simply use `graph.linkAll()` or `graph.unlinkAll()`. The density or the graph will be respectively 1 and 0.
 
 ## Grid.mjs
 
