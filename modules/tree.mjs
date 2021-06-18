@@ -3,22 +3,27 @@ import { Graph } from "./graph.mjs";
 export class Tree extends Graph { // rooted tree only ?
     // https://en.wikipedia.org/wiki/Tree_(data_structure)#Terminology
 
-    #degree = Infinity; // maximum number of children for each node
+    #treeDegree = Infinity; // maximum number of children for each node
 
-    constructor(edges, degree=Infinity) {
+    constructor(edges, treeDegree=Infinity) {
         super(edges);
+        // set degree
     }
 
 
     /******************** SETTERS ********************/
 
-    set degree(n) {
-        this.#degree = n;
+    set treeDegree(n) {
+        this.#treeDegree = n;
         // delete excess nodes, or reorder ?
     }
 
 
     /******************** GETTERS ********************/
+
+    get treeDegree() {
+        return this.#treeDegree;
+    }
 
     get root() {
         return this.roots[0];
@@ -28,11 +33,11 @@ export class Tree extends Graph { // rooted tree only ?
 
     }
 
-    depth(node) { // distance from the root
+    depth(node, weighted=true) { // distance from the root
 
     }
 
-    height(node) { // distance to the farest leave
+    height(node, weighted=true) { // distance to the farest leave
 
     }
 
@@ -62,13 +67,18 @@ export class Tree extends Graph { // rooted tree only ?
     }
 
     get isComplete() { // m-ary tree where every node has m children except for the last level, where leaves are as far left as possible
-
+        // let branchs = Math.round(tree.size / (tree.size - tree.leaves.length)); // estimation
     }
 
     get isPerfect() { // a full m-ary tree where all leafs are at the same depth
 
     }
 
+    /******************** TREE SEARCH ********************/
+
+    lowestCommonAncestor(node1, node2) {
+
+    }
 
     /******************** OTHER TREE CONSTRUCTORS ********************/
 
@@ -76,30 +86,45 @@ export class Tree extends Graph { // rooted tree only ?
 
     }
 
-    static generateTree(m, branchs = 2) { // complete m-ary tree generator (2 branchs : binary tree)
-        return Tree.fromAdjList([...Array(m)].map((x, i) => [...Array(i + 1 == Math.ceil(m / branchs) ? (m - 1) % branchs : branchs * (i < m / branchs))].map((y, j) => i * branchs + j + 1)));
+    static generateTree(n, degree=2) { // complete m-ary tree generator (2 degree : binary tree)
+        return Tree.fromAdjList([...Array(n)].map((x, i) => [...Array(i + 1 == Math.ceil(n / degree) ? (n - 1) % degree : degree * (i < n / degree))].map((y, j) => i * degree + j + 1)));
     }
 
 
     /******************** CHECKERS ********************/
 
-    static getBranchNb(edges) {
-        if (!Tree.edgeListType(edges)) return 0;
-        let tree = new Graph(edges);
-        let roots = tree.roots;
-        if (roots.length != 1) return 0;
-        let branchs = Math.round(tree.size / (tree.size - tree.leaves.length)); // estimation
-
-    }
-
     static isTree(tree) {
         return tree instanceof Tree;
     }
 
-    static isValidTree(edges, degree=Infinity) {
+    static isValidTree(edges, degree=Infinity) { // degree : the maximum number of children for each node
+        let tree = new Graph(edges);
+        let roots = tree.roots;
+        if (roots.length != 1) return false;
 
+        let adjList = tree.adjList;
+        let stack = [roots[0]];
+        let visited = [];
+        while (stack.length) { // DFS
+            let node = stack.pop();
+            visited.push(node);
+            if (!adjList[node]) continue; // if node is a leaf
+            if (adjList[node].length > degree) return false;
+            adjList[node].forEach(x => {
+                if (!visited.includes(x)) {
+                    stack.push(x);
+                } else { 
+                    return false;
+                }
+            })
+        }
+        return true;
     }
 
+    static getTreeDegree(tree) {
+        if (!Tree.isTree(tree)) throw Error('Tree getTreeDegree() : invalid tree argument');
+        return Math.max(...Object.values(tree.adjList).map(x => x.length));
+    }
 
     /******************** DELETED METHODS ********************/
 
