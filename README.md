@@ -166,6 +166,7 @@ There are many ways to filter the graph's node list. Note : all the methods belo
 
     graph.roots;              // return nodes with no parents
     graph.leaves;             // return nodes with no children
+    graph.innerNodes;         // return nodes which are neither root nor leaf
     graph.getParents(node);   // return parents of a specific node
     graph.getChildren(node);  // return children of a specific node
     graph.getNeighbors(node); // return parents and children of a specific node (without redundancy)
@@ -176,6 +177,7 @@ At last, there are also many features to have some informations about a specific
 
     graph.isRoot(node);
     graph.isLeave(node);
+    graph.isInnerNode(node);
     graph.hasParents(node);
     graph.hasChildren(node);
     graph.hasNeighbors(node);
