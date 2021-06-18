@@ -94,6 +94,10 @@ export class Graph {
         return this.nodes.filter(node => !this.hasChildren(node));
     }
 
+    get innerNodes() {
+        return this.nodes.filter(node => this.hasParents(node) && this.hasChildren(node)); // or only this.hasChildren(node) ?
+    }
+
 
     /******************** LINKS AND NODES ********************/
 
@@ -107,6 +111,10 @@ export class Graph {
 
     isLeave(node) {
         return this.leaves.includes(node);
+    }
+
+    isInnerNode(node) {
+        return this.innerNodes.includes(node);
     }
 
     getParents(node) {
@@ -226,7 +234,7 @@ export class Graph {
         end = end && end.toString();
         if (!isNaN(value)) {
             if (end) { // set edge weight
-                this.addNodesFromEdges([[start, end]]);
+                this.addNodesFromEdges([[start, end]]); // create node if doesn't exist
                 let edges = Object.fromEntries(this.weightedEdges);
                 edges[[start,end]] = value;
                 if (both) edges[[end, start]] = value;
