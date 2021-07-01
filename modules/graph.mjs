@@ -250,16 +250,60 @@ export class Graph {
 
     /******************** GRAPH SEARCH ********************/
 
-    dfs(start, end=undefined) {
-
+    recursiveDFS(node, visited=[]) {
+        visited.push(node)
+        this.adjList[node] && this.adjList[node].filter(x => !visited.includes(x)).forEach(x => this.recursiveDFS(x, visited))
+        return visited
     }
-
-    bfs(start, end=undefined) {
-
+    
+    iterativeDFS(node) {
+        let visited = [], stack = [node.toString()];
+        while (stack.length) {
+            visited.push(node = stack.pop())
+            this.adjList[node] && this.adjList[node].filter(x => !visited.includes(x)).forEach(x => stack.push(x))
+        }
+        return visited
+    }
+    
+    iterativeBFS(node) {
+        node = node.toString();
+        let visited = [node], stack = [node];
+        while (stack.length) {
+            node = stack.shift();
+            this.adjList[node] && this.adjList[node].filter(x => !visited.includes(x)).forEach(x => {
+                visited.push(x)
+                stack.push(x)
+            })
+        }
+        return visited
     }
 
     dijkstra(start, end=undefined) {
-
+        let distances = {}
+        Object.keys(this.weightedAdjList).forEach(x => distances[x] = {parent: null, distance: Infinity});
+        distances[start].distance = 0;
+        let visited = [];
+        let stack = [start];
+        while (stack.length) {
+            let node = stack.pop();
+            visited.push(node);
+            Object.keys(this.weightedAdjList[node]).forEach(next => {
+                if (distances[node].distance + this.weightedAdjList[node][next] < distances[next].distance) {
+                    distances[next].parent = node; 
+                    distances[next].distance = distances[node].distance + this.weightedAdjList[node][next];
+                }
+                if (!visited.includes(next)) stack.push(next);
+            })
+        }
+        if (end == undefined) return distances;
+        let path = [];
+        let node = end;
+        let distance = distances[node].distance;
+        while (distances[node].parent) {
+            node = distances[node].parent;
+            path.push(node);
+        }
+        return [distance, path.reverse().concat([end])];
     }
 
 
@@ -406,6 +450,8 @@ export class Graph {
             return Object.fromEntries(adjList.map(([node, links]) => [node, Object.fromEntries(links)]));
         } else if (adjListType == 'object') { // {'A': ['B', 'C'], 'B': ['A', 'C']}
             return Object.fromEntries(Object.entries(adjList).map(([key, value]) => [key, Object.fromEntries(value.map(node => [node, 1]))]));
+        } else {
+            return adjList;
         }
     }
 
